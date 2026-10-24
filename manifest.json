@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Új lap",
+  "version": "1.0",
+  "description": "Új lapon helyben marad, nem irányít át, így a kurzor a címsávban marad. A keresőmező Google-javaslatokat ad, és a Google találati oldalára küld.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "chrome_url_overrides": { "newtab": "newtab.html" },
+  "host_permissions": ["https://suggestqueries.google.com/*"]
+}

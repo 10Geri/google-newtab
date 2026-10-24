@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<title>Új lap</title>
+<link rel="icon" type="image/svg+xml" href="google.svg">
+<style>
+  :root {
+    color-scheme: dark light;
+
+    /* --- ízlés szerint állítható --- */
+    --box-width: 1100px;     /* a keresőmező szélessége */
+    --box-height: 60px;
+
+    --bg: #1b1c1e;
+    --fg: #e8eaed;
+    --muted: #9aa0a6;
+    --faint: #5f6368;
+    --field: #2a2b2e;
+    --field-focus: #35363a;
+    --border: #3c4043;
+    --hover: rgba(255, 255, 255, .07);
+    --shadow: 0 8px 28px rgba(0, 0, 0, .45);
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #ffffff;
+      --fg: #202124;
+      --muted: #70757a;
+      --faint: #bdc1c6;
+      --field: #ffffff;
+      --field-focus: #ffffff;
+      --border: #dfe1e5;
+      --hover: rgba(0, 0, 0, .05);
+      --shadow: 0 8px 24px rgba(0, 0, 0, .14);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  main {
+    width: 100%;
+    max-width: var(--box-width);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2vh;
+  }
+
+  /* ---------- óra ---------- */
+  .clock {
+    font-size: clamp(56px, 9vw, 104px);
+    font-weight: 200;
+    letter-spacing: -.03em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+  }
+  .date {
+    margin: 12px 0 0;
+    color: var(--muted);
+    font-size: 15px;
+    letter-spacing: .04em;
+  }
+
+  /* ---------- kép ---------- */
+  .banner {
+    display: block;
+    width: 100%;
+    height: clamp(280px, 60vh, 680px);
+    margin-top: 28px;
+    object-fit: cover;
+    object-position: center 60%;
+    border-radius: 24px;
+  }
+
+  /* fókuszált kereső: a kép a kereső alá kerül (newtab.js: swap) */
+  main.swapped .banner { order: 1; }
+  main.swapped .links { order: 2; }
+
+  /* ---------- kereső ---------- */
+  .search {
+    position: relative;
+    width: 100%;
+    margin-top: 32px;
+  }
+
+  form {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: var(--box-height);
+    padding: 0 12px 0 22px;
+    background: var(--field);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--box-height) / 2);
+    transition: background .15s, box-shadow .15s, border-color .15s;
+  }
+  .search.open form {
+    border-radius: calc(var(--box-height) / 2) calc(var(--box-height) / 2) 0 0;
+    border-bottom-color: transparent;
+  }
+  form:focus-within {
+    background: var(--field-focus);
+    box-shadow: var(--shadow);
+  }
+
+  .icon { width: 20px; height: 20px; flex: none; fill: var(--muted); }
+
+  input[type="text"] {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    background: none;
+    border: 0;
+    outline: none;
+    color: var(--fg);
+    font: inherit;
+    font-size: 17px;
+  }
+
+  button {
+    flex: none;
+    background: none;
+    border: 0;
+    border-radius: 18px;
+    padding: 9px 18px;
+    color: var(--muted);
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  button:hover { color: var(--fg); background: var(--hover); }
+
+  /* ---------- javaslatok ---------- */
+  ul.suggest {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--box-height);
+    margin: 0;
+    padding: 8px 0 12px;
+    list-style: none;
+    background: var(--field-focus);
+    border: 1px solid var(--border);
+    border-top: 0;
+    border-radius: 0 0 24px 24px;
+    box-shadow: var(--shadow);
+    z-index: 2;
+  }
+  ul.suggest[hidden] { display: none; }
+  ul.suggest li {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 9px 22px;
+    cursor: pointer;
+    color: var(--fg);
+  }
+  ul.suggest li .icon { fill: var(--faint); }
+  ul.suggest li:hover,
+  ul.suggest li.on { background: var(--hover); }
+
+  /* ---------- gyorslinkek ---------- */
+  .links { margin: 28px 0 0; display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+  .links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 16px;
+  }
+  .links a:hover { color: var(--fg); background: var(--hover); }
+</style>
+</head>
+<body>
+  <main>
+    <p class="clock" id="clock">--:--</p>
+    <p class="date" id="date"></p>
+    <img class="banner" src="Denmark.jpg" alt="Koppenhága, Nyhavn">
+
+    <!-- Szándékosan nincs autofocus és nincs „bárhová gépelsz" kezelő:
+         így a Chrome a kurzort a címsávban hagyja. -->
+    <div class="search" id="search">
+      <form action="https://www.google.com/search" method="GET" role="search" id="form">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+        <input type="text" id="q" name="q" aria-label="Keresés a Google-ben"
+               autocomplete="off" spellcheck="false"
+               role="combobox" aria-expanded="false" aria-controls="suggest">
+        <button type="submit">Keresés</button>
+      </form>
+      <ul class="suggest" id="suggest" role="listbox" hidden></ul>
+    </div>
+
+    <p class="links">
+      <a href="https://www.google.com/">Google</a>
+      <a href="https://mail.google.com/">Gmail</a>
+      <a href="https://www.youtube.com/">YouTube</a>
+    </p>
+  </main>
+
+  <script src="newtab.js"></script>
+</body>
+</html>
