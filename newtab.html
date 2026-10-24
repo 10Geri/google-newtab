@@ -183,9 +183,113 @@
     border-radius: 16px;
   }
   .links a:hover { color: var(--fg); background: var(--hover); }
+
+  /* ---------- jobb felső sáv ---------- */
+  .topbar {
+    position: fixed;
+    top: 12px;
+    right: 16px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 3;
+  }
+  .topbar > a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--fg);
+    text-decoration: none;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 18px;
+  }
+  .topbar > a img { width: 20px; height: 20px; }
+  .topbar > a:hover { background: var(--hover); }
+
+  .apps { position: relative; }
+  .apps > button {
+    display: flex;
+    padding: 10px;
+    border-radius: 50%;
+  }
+  .apps > button .icon { width: 24px; height: 24px; }
+  .apps > button[aria-expanded="true"] { background: var(--hover); }
+
+  .apps-panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 328px;
+    max-height: min(480px, calc(100vh - 80px));
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 16px;
+    background: var(--field-focus);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow);
+  }
+  .apps-panel[hidden] { display: none; }
+  .apps-panel a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 4px 10px;
+    border-radius: 16px;
+    color: var(--fg);
+    text-decoration: none;
+    font-size: 13px;
+    text-align: center;
+  }
+  .apps-panel a img { width: 40px; height: 40px; }
+  .apps-panel a:hover { background: var(--hover); }
 </style>
 </head>
 <body>
+  <nav class="topbar">
+    <a href="https://mail.google.com/"><img src="icons/apps/gmail.png" alt="">Gmail</a>
+    <a href="https://drive.google.com/"><img src="icons/apps/drive.png" alt="">Drive</a>
+    <a href="https://contacts.google.com/"><img src="icons/apps/contacts.png" alt="">Névjegyek</a>
+    <div class="apps" id="apps">
+      <button type="button" id="apps-btn" aria-label="Google-alkalmazások"
+              aria-expanded="false" aria-controls="apps-panel">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM6 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+        </svg>
+      </button>
+      <div class="apps-panel" id="apps-panel" hidden>
+        <a href="https://myaccount.google.com/"><img src="icons/apps/account.png" alt="">Fiók</a>
+        <a href="https://www.google.com/"><img src="icons/apps/search.png" alt="">Kereső</a>
+        <a href="https://gemini.google.com/"><img src="icons/apps/gemini.png" alt="">Gemini</a>
+        <a href="https://maps.google.com/"><img src="icons/apps/maps.png" alt="">Térkép</a>
+        <a href="https://www.youtube.com/"><img src="icons/apps/youtube.png" alt="">YouTube</a>
+        <a href="https://play.google.com/"><img src="icons/apps/play.png" alt="">Play</a>
+        <a href="https://news.google.com/"><img src="icons/apps/news.png" alt="">Hírek</a>
+        <a href="https://mail.google.com/"><img src="icons/apps/gmail.png" alt="">Gmail</a>
+        <a href="https://meet.google.com/"><img src="icons/apps/meet.png" alt="">Meet</a>
+        <a href="https://chat.google.com/"><img src="icons/apps/chat.png" alt="">Chat</a>
+        <a href="https://contacts.google.com/"><img src="icons/apps/contacts.png" alt="">Névjegyek</a>
+        <a href="https://drive.google.com/"><img src="icons/apps/drive.png" alt="">Drive</a>
+        <a href="https://calendar.google.com/"><img src="icons/apps/calendar.png" alt="">Naptár</a>
+        <a href="https://translate.google.com/"><img src="icons/apps/translate.png" alt="">Fordító</a>
+        <a href="https://photos.google.com/"><img src="icons/apps/photos.png" alt="">Fotók</a>
+        <a href="https://docs.google.com/document/"><img src="icons/apps/docs.png" alt="">Dokumentumok</a>
+        <a href="https://docs.google.com/spreadsheets/"><img src="icons/apps/sheets.png" alt="">Táblázatok</a>
+        <a href="https://docs.google.com/presentation/"><img src="icons/apps/slides.png" alt="">Diák</a>
+        <a href="https://docs.google.com/forms/"><img src="icons/apps/forms.png" alt="">Űrlapok</a>
+        <a href="https://keep.google.com/"><img src="icons/apps/keep.png" alt="">Keep</a>
+        <a href="https://sites.google.com/"><img src="icons/apps/sites.png" alt="">Webhelyek</a>
+        <a href="https://classroom.google.com/"><img src="icons/apps/classroom.png" alt="">Classroom</a>
+        <a href="https://earth.google.com/"><img src="icons/apps/earth.png" alt="">Earth</a>
+        <a href="https://www.blogger.com/"><img src="icons/apps/blogger.png" alt="">Blogger</a>
+      </div>
+    </div>
+  </nav>
+
   <main>
     <p class="clock" id="clock">--:--</p>
     <p class="date" id="date"></p>

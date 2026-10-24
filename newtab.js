@@ -184,6 +184,31 @@
 })();
 
 /* ------------------------------------------------------------------ *
+ * Google-alkalmazások menü (9 pötty)
+ * Kattintásra nyílik/zárul; kikattintás vagy Esc bezárja.
+ * ------------------------------------------------------------------ */
+(function apps() {
+    const wrap = document.getElementById('apps');
+    const btn = document.getElementById('apps-btn');
+    const panel = document.getElementById('apps-panel');
+
+    function setOpen(on) {
+        panel.hidden = !on;
+        btn.setAttribute('aria-expanded', String(on));
+    }
+
+    btn.addEventListener('click', function () { setOpen(panel.hidden); });
+
+    document.addEventListener('mousedown', function (e) {
+        if (!wrap.contains(e.target)) setOpen(false);
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') setOpen(false);
+    });
+})();
+
+/* ------------------------------------------------------------------ *
  * Tab mindig a keresőmezőbe visz
  * Az oldalon belül a Tab nem lép tovább, hanem a mezőbe ugrik. Ha a
  * fókusz kívülről (pl. a címsávból Tabbal) billentyűzettel érkezik
